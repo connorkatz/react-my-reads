@@ -15,11 +15,20 @@ class BookSearch extends Component {
    }
 
    searchBooks = searchString => {
+
+      const { books } = this.props;
+      
       if (searchString.length) {
          BooksAPI.search(searchString).then(data => {
             if (data.error) {
                this.setState({ bookResults: [] })
             } else {
+               data.forEach(book => {
+                  const myBook = books.find(b => b.id === book.id);
+                  if (myBook) {
+                     book.shelf = myBook.shelf;
+                  }
+               });
                this.setState({ bookResults: data })
             }
          })

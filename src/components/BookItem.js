@@ -1,13 +1,18 @@
 import React, { Component } from 'react';
 
 class BookItem extends Component {
+
    render() {
+
+      const { shelf, title, authors } = this.props.bookDetails;
+      const { thumbnail } = this.props.bookDetails.imageLinks;
+
       return (
          <div className="book">
             <div className="book-top">
-               <div className="book-cover" style={{ width: 128, height: 193, backgroundImage: `url(${this.props.bookDetails.imageLinks.thumbnail})` }}></div>
+               <div className="book-cover" style={{ width: 128, height: 193, backgroundImage: `url(${thumbnail})` }}></div>
                <div className="book-shelf-changer">
-                  <select value={this.props.bookDetails.shelf} onChange={ event => this.props.updateBookSection(this.props.bookDetails, event.target.value)}>
+                  <select value={shelf ? shelf : 'none'} onChange={event => this.props.updateBookSection(this.props.bookDetails, event.target.value)}>
                      <option value="none" disabled>Move to...</option>
                      <option value="currentlyReading">Currently Reading</option>
                      <option value="wantToRead">Want to Read</option>
@@ -16,11 +21,9 @@ class BookItem extends Component {
                   </select>
                </div>
             </div>
-            <div className="book-title">{this.props.bookDetails.title}</div>
+            <div className="book-title">{title}</div>
             <div className="book-authors">
-               { this.props.bookDetails.authors !== undefined ? this.props.bookDetails.authors.map(author => (
-                  <span key={author}>{author}</span>
-               )) : null}
+               {authors ? authors.join(', '): ''}
             </div>
          </div>
       )
